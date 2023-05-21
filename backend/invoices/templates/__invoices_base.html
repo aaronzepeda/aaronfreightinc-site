@@ -1,0 +1,91 @@
+{% load static %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Placeholder description.">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!--Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/__invoices_global.css' %}">
+
+    <!-- Homepage Title -->
+    <title>Aaron Zepeda's Website</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- The rest of the page's header -->
+    {% block header %}
+    {% endblock %}
+
+    <!-- Navigation bar -->
+    <!-- <nav class="navbar navbar-light bg-light">
+
+      <a class="navbar-brand d-flex flex-row" href="#">
+        <img src="{% static 'images/logo.svg' %}" class="" height="60" alt="">
+      </a>
+      <h2 class="text-center"><strong>Online Invoice Generator</strong></h2>
+      <a class="navbar-brand d-flex flex-row align-items-center" href="/">Home</a>
+    </nav> -->
+
+    <nav class="navbar bg-body-tertiary shadow">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'invoices:index' %}">
+          <img src="{% static 'images/logo.svg' %}" alt="Bootstrap" height="50" class="d-inline-block align-text-top">
+          
+        </a>
+        <div>
+          <a class="text-secondary" href="{% url 'invoices:index' %}"">Invoices</a>
+          <a class="text-secondary" href="{% url 'invoices:generate' %}">Generate</a>
+          <a class="text-secondary" href="/admin">Admin</a>
+        </div>
+      </div>
+    </nav>
+
+  </head>
+
+
+
+  <body class="bg-body-secondary">
+    <div id="page-container">
+      <div id="wrapper">
+
+        <!-- The rest of the page's body -->
+        {% block body %}
+        {% endblock %}
+      </div>
+
+      <!-- The footer -->
+      <footer id="footer" class="bg-dark d-flex align-items-center">
+        <div class="container-fluid text-white text-center">
+          © 2023 Copyright:
+          <a class="text-white" href="https://aaronzepeda.com">aaronzepeda.com</a>
+        </div>
+      </footer>
+    </div>
+
+    
+
+
+    <!-- Bootstrap Js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  </body>
+
+
+</html>
