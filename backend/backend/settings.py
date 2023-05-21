@@ -47,9 +47,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
+            'NAME': 'aaronfreightinc_site',
+            'USER': 'django',
+            'PASSWORD': 'django',
             'HOST': 'database',
             'PORT': 5432,
         }
