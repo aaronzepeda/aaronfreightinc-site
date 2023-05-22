@@ -52,11 +52,7 @@ def pdf(request, invoice):
     rendered_html = template.render(args)
 
     # Create a temporary file to store the PDF
-    with (
-        tempfile.NamedTemporaryFile(delete=False) as generated_invoice_pdf,
-        tempfile.NamedTemporaryFile(delete=False) as complete_invoice_pdf,
-        tempfile.NamedTemporaryFile(delete=False) as modified_attachment):
-
+    with tempfile.NamedTemporaryFile(delete=False) as generated_invoice_pdf, tempfile.NamedTemporaryFile(delete=False) as complete_invoice_pdf, tempfile.NamedTemporaryFile(delete=False) as modified_attachment:
         # Generate the PDF using WeasyPrint
         font_config = FontConfiguration()
         invoice_css = CSS(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static/css/invoice.css'), font_config=font_config)
