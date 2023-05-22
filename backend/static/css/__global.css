@@ -1,0 +1,27 @@
+/*Global*/
+body {
+    background-color: var(--color-dark-01db);
+}
+
+h1 {
+    font-family: 'Wix Madefor Text', sans-serif;
+}
+h2 {
+    font-family: 'Wix Madefor Text', sans-serif;
+}
+h3 {
+    font-family: 'Wix Madefor Text', sans-serif;
+  }
+h4 {
+    font-family: 'Wix Madefor Text', sans-serif;
+  }
+h5 {
+    font-family: 'Wix Madefor Text', sans-serif;
+}
+h6 {
+    font-family: 'Wix Madefor Text', sans-serif;
+}
+p {
+    font-family: 'Wix Madefor Text', sans-serif;
+}
+  

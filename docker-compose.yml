@@ -32,14 +32,7 @@ services:
 #    ports:
 #      - 80:80
 
-  frontend:
-    build: ./frontend
-    depends_on:
-      - backend
-
   server:
     image: nginx
     depends_on:
-      - frontend
-    ports:
-      - 80:80
+      - backend
