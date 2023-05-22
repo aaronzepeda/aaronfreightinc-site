@@ -23,4 +23,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("/", include("index.urls", namespace='index')),
     path("invoices/", include("invoices.urls",namespace='invoices'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    # Dev-only Serve
+    urlpatterns += static('/static_root/', document_root=settings.STATIC_ROOT)
+    urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,38 @@
+# project/docker-compose.yml
+
+version: "3"
+services:
+
+  database:
+    image: postgres:12.7-alpine
+    volumes:
+        - ./backup_data/db:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+      - ./backend/static_root:/static_root
+      - ./backend/media:/media
+    depends_on:
+      - database
+  
+#  frontend:
+#    build: ./frontend
+#    volumes:
+#      - ./frontend:/app
+#      - ./backend/static_root:/static_root
+#      - ./backend/media:/media
+#    depends_on:
+#      - backend
+#    ports:
+#      - 80:80
+
+  server:
+    image: nginx
+    ports:
+      - 80:80
