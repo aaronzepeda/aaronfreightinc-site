@@ -9,12 +9,12 @@ import PIL
   
 def read_bill_of_lading(file):
     # Set dependencies
-    TESSERACT_PATH = r'dependencies/tesseract/tesseract.exe'
-    POPPLER_PATH = r'dependencies/poppler/Library/bin'
-    path = os.getcwd()
-    poppler = os.path.abspath(os.path.join(path, POPPLER_PATH))
-    tesseract = os.path.abspath(os.path.join(path, TESSERACT_PATH))
-    pytesseract.pytesseract.tesseract_cmd = tesseract 
+#    TESSERACT_PATH = r'dependencies/tesseract/tesseract.exe'
+#    POPPLER_PATH = r'dependencies/poppler/Library/bin'
+#    path = os.getcwd()
+#    poppler = os.path.abspath(os.path.join(path, POPPLER_PATH))
+#    tesseract = os.path.abspath(os.path.join(path, TESSERACT_PATH))
+#    pytesseract.pytesseract.tesseract_cmd = tesseract 
     
     # Search keyterms
     SIMPLE_SEARCH_QUERY = {
@@ -24,7 +24,7 @@ def read_bill_of_lading(file):
     }
 
     # Convert PDF to PIL images using pdf2image
-    pages = convert_from_bytes(file.read(), dpi=400, poppler_path=poppler)
+    pages = convert_from_bytes(file.read(), dpi=400)
     page = np.array(pages[0])
     gray = cv2.cvtColor(page, cv2.COLOR_BGR2GRAY)
     cv2.imwrite('output.png', gray)

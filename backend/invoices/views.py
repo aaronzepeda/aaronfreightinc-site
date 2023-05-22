@@ -21,11 +21,6 @@ from .forms import (
     BillOfLadingForm,
 )
 
-current_path = os.getcwd()
-GTK3_PATH = r'dependencies/weasyprint/GTK3-Runtime Win64/bin/'
-gtk = os.path.abspath(os.path.join(current_path, GTK3_PATH))
-
-os.add_dll_directory(gtk)
 from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
 
