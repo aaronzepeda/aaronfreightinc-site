@@ -43,8 +43,8 @@ if config('ENVIRONMENT') == 'production':
     # Database configuration
     print('In production!')
     postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
-    if secret_key_file:
-        with open(secret_key_file) as f:
+    if postgres_password_file:
+        with open(postgres_password_file) as f:
             POSTGRES_PASSWORD = f.read().strip()
     else:
         POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
