@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 RUN touch .env
 # RUN echo "yes" | python manage.py collectstatic
 RUN python manage.py collectstatic --noinput
-CMD python manage.py makemigrations && python manage.py migrate && gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn backend.wsgi:application --bind 0.0.0.0:8000
