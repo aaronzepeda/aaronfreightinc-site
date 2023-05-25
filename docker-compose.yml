@@ -17,12 +17,12 @@ services:
 
   backend:
     build: ./backend
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
     volumes:
-      - ./backend:/backend
-      - ./backend/static:/backend/static
-      - ./backend/media:/backend/media
+      - ./backend:/app
+      - ./backend_assets/static:/backend_assets/static
+      - ./backend_assets/media:/backend_assets/media
     environment:
       - SECRET_KEY_FILE=/run/secrets/backend_secret_key
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
@@ -49,8 +49,8 @@ services:
       - '80:80'
     volumes:
       - ./server/nginx.conf:/etc/nginx/nginx.conf
-      - ./backend/static:/backend/static
-      - ./backend/media:/backend/media
+      - ./backend_assets/static:/backend_assets/static
+      - ./backend_assets/media:/backend_assets/media
     depends_on:
       - backend
 
