@@ -9,4 +9,5 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 tesseract-ocr poppl
 RUN pip install -r requirements.txt
 RUN touch .env
 # RUN echo "yes" | python manage.py collectstatic
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn -b 0.0.0.0:8000 --worker-class=gevent --worker-connections=1000 --workers=5 backend.wsgi
+RUN python manage.py collectstatic --noinput
+CMD python manage.py makemigrations && python manage.py migrate && gunicorn backend.wsgi:application --bind 0.0.0.0:8000
