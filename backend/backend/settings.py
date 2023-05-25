@@ -39,14 +39,14 @@ SERVER_PORT = '8000'
 # Allowed hosts
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
-# Database configuration
-postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
-if secret_key_file:
-    with open(secret_key_file) as f:
-        POSTGRES_PASSWORD = f.read().strip()
-else:
-    POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
 if config('ENVIRONMENT') == 'production':
+    # Database configuration
+    postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
+    if secret_key_file:
+        with open(secret_key_file) as f:
+            POSTGRES_PASSWORD = f.read().strip()
+    else:
+        POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
