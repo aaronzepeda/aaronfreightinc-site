@@ -3,6 +3,7 @@
 
 ### Custom ###
 backup_data/
+secrets/
 
 ### Django ###
 *.log

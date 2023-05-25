@@ -4,29 +4,37 @@ version: "3"
 services:
 
   database:
-    image: postgres:12.7-alpine
+    image: postgres:latest
     restart: always
     volumes:
         - ./backup_data/db:/var/lib/postgresql/data
     environment:
-        - POSTGRES_DB=postgres
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=aaronfreightinc_db
+        - POSTGRES_USER=aaronfreightinc
+        - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+       - db_password
 
   backend:
     build: ./backend
     volumes:
       - ./backend:/app
-      - ./backend/static_root:/static_root
+      - ./backend/static:/static
       - ./backend/media:/media
+    environment:
+      - SECRET_KEY_FILE=/run/secrets/backend_secret_key
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     depends_on:
       - database
+    secrets:
+       - db_password
+       - backend_secret_key
   
 #  frontend:
 #    build: ./frontend
 #    volumes:
 #      - ./frontend:/app
-#      - ./backend/static_root:/static_root
+#      - ./backend/static:/static
 #      - ./backend/media:/media
 #    depends_on:
 #      - backend
@@ -39,5 +47,13 @@ services:
       - '80:80'
     volumes:
       - ./server/nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/static:/static
+      - ./backend/media:/media
     depends_on:
       - backend
+
+secrets:
+   db_password:
+     file: ./secrets/db_password.txt
+   backend_secret_key:
+     file: ./secrets/backend_secret_key.txt

@@ -25,7 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ENVIRONMENT = config('ENVIRONMENT', default='development')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+secret_key_file = config('SECRET_KEY_FILE', default=None)
+if secret_key_file:
+    with open(secret_key_file) as f:
+        SECRET_KEY = f.read().strip()
+else:
+    SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
@@ -35,15 +40,21 @@ SERVER_PORT = '8000'
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Database configuration
+postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
+if secret_key_file:
+    with open(secret_key_file) as f:
+        POSTGRES_PASSWORD = f.read().strip()
+else:
+    POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
 if config('ENVIRONMENT') == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DATABASE_NAME'),
-            'USER': config('DATABASE_USER'),
-            'PASSWORD': config('DATABASE_PASSWORD'),
-            'HOST': config('DATABASE_HOST'),
-            'PORT': config('DATABASE_PORT', default=''),
+            'NAME': 'aaronfreightinc_db',
+            'USER': 'aaronfreightinc',
+            'PASSWORD': POSTGRES_PASSWORD,
+            'HOST': 'database',
+            'PORT': 5432,
         }
     }
 else:
