@@ -20,9 +20,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
-      - ./backend/static:/app/static
-      - ./backend/media:/app/media
+      - ./backend:/backend
+      - ./backend/static:/backend/static
+      - ./backend/media:/backend/media
     environment:
       - SECRET_KEY_FILE=/run/secrets/backend_secret_key
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
@@ -53,6 +53,7 @@ services:
       - ./backend/media:/backend/media
     depends_on:
       - backend
+
 
 secrets:
    db_password:
