@@ -19,8 +19,8 @@ services:
     build: ./backend
     volumes:
       - ./backend:/app
-      - ./backend/static:/static
-      - ./backend/media:/media
+      - ./backend/static:/app/static
+      - ./backend/media:/app/media
     environment:
       - SECRET_KEY_FILE=/run/secrets/backend_secret_key
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
@@ -47,8 +47,8 @@ services:
       - '80:80'
     volumes:
       - ./server/nginx.conf:/etc/nginx/nginx.conf
-      - ./backend/static:/static
-      - ./backend/media:/media
+      - ./backend/static:/backend/static
+      - ./backend/media:/backend/media
     depends_on:
       - backend
 
