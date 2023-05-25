@@ -5,6 +5,7 @@ services:
 
   database:
     image: postgres:12.7-alpine
+    restart: always
     volumes:
         - ./backup_data/db:/var/lib/postgresql/data
     environment:
@@ -34,5 +35,9 @@ services:
 
   server:
     image: nginx
+    ports:
+      - '80:80'
+    volumes:
+      - ./server/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - backend
