@@ -8,7 +8,5 @@ WORKDIR /app
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 tesseract-ocr poppler-utils pango1.0-tools -y
 RUN pip install -r requirements.txt
 RUN touch .env
-RUN python manage.py makemigrations
-RUN python manage.py migrate
 # RUN echo "yes" | python manage.py collectstatic
-CMD python manage.py collectstatic --noinput && gunicorn -b 0.0.0.0:8000 --worker-class=gevent --worker-connections=1000 --workers=5 backend.wsgi
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn -b 0.0.0.0:8000 --worker-class=gevent --worker-connections=1000 --workers=5 backend.wsgi
