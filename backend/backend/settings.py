@@ -16,7 +16,6 @@ from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR_PARENT = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,16 +38,15 @@ SERVER_PROTOCOL = 'http'
 SERVER_PORT = '8000'
 # Allowed hosts
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+print(ALLOWED_HOSTS)
 
-if config('ENVIRONMENT') == 'production':
-    # Database configuration
+postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
+if config('ENVIRONMENT') == 'production' and postgres_password_file:
     print('In production!')
-    postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
-    if postgres_password_file:
-        with open(postgres_password_file) as f:
-            POSTGRES_PASSWORD = f.read().strip()
-    else:
-        POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
+    # Database configuration
+    POSTGRES_PASSWORD = ''
+    with open(postgres_password_file) as f:
+        POSTGRES_PASSWORD = f.read().strip()
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -153,12 +151,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_ROOT = BASE_DIR_PARENT / 'backend_assets/static'
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = 'static/'
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_ROOT = BASE_DIR_PARENT / 'backend_assets/media'
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
 
 # Default primary key field type
