@@ -35,7 +35,6 @@ def read_bill_of_lading(file):
     pages = convert_from_bytes(file.read(), dpi=400, poppler_path = POPPLER_PATH)
     page = np.array(pages[0])
     gray = cv2.cvtColor(page, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite('output.png', gray)
                                 
     # Extract text from image
     ocr_text = pytesseract.image_to_string(gray, lang='eng')
