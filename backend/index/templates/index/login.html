@@ -1,0 +1,33 @@
+{% extends 'index/__base.html' %}
+{% load static %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+  <!-- Title -->
+  <div class="container-fluid">
+    <div class="py-2"></div>
+    <div class="text-center text-dark pt-4 pb-2">
+      <h1><strong>Login</strong></h1>
+    </div>
+    <div class="text-center text-secondary pt-2 pb-4">
+      Please enter your information below to login.
+    </div>
+    <div class="py-2"></div>
+  </div>
+  <!-- End Title -->
+  
+  <div class="container-sm py-4">
+    <form method="POST">
+      {% csrf_token %}
+      {% bootstrap_form login_form %}   
+      <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+    <!-- <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p> -->
+  </div>
+{% endblock %}

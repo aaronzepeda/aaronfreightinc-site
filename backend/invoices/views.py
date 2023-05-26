@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.template.loader import get_template
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from PyPDF2 import PdfReader, PdfWriter, Transformation, PageObject
 from PyPDF2.generic import RectangleObject
@@ -25,16 +26,6 @@ from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
 
 
-
-@login_required
-def index(request):
-    args = {
-        'invoices' : Invoice.objects.all().order_by('date')
-    }
-
-    return render(request, 'invoices_index.html', args)
-
-
 def pdf(request, invoice):
     args = {
         "invoice" : invoice,
@@ -42,7 +33,7 @@ def pdf(request, invoice):
     }
 
     # Get the template
-    template = get_template('invoice_as_pdf.html')
+    template = get_template('invoices/invoice_as_pdf.html')
     
     # Render the template
     rendered_html = template.render(args)
@@ -51,7 +42,7 @@ def pdf(request, invoice):
     with tempfile.NamedTemporaryFile(delete=False) as generated_invoice_pdf, tempfile.NamedTemporaryFile(delete=False) as complete_invoice_pdf, tempfile.NamedTemporaryFile(delete=False) as modified_attachment:
         # Generate the PDF using WeasyPrint
         font_config = FontConfiguration()
-        invoice_css = CSS(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static/css/invoice.css'), font_config=font_config)
+        invoice_css = CSS(settings.BASE_DIR / 'invoices/static/invoices/css/invoice.css', font_config=font_config)
         bootstrap_css = CSS(url='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css')
         HTML(string=rendered_html, base_url=request.build_absolute_uri()).write_pdf(target=generated_invoice_pdf, stylesheets=[bootstrap_css,invoice_css],font_config=font_config)
 
@@ -101,6 +92,17 @@ def pdf(request, invoice):
         response['Content-Disposition'] = 'filename="' + invoice.get_pdf_name() + '.pdf"'
         return response
     
+
+
+
+@login_required
+def index(request):
+    args = {
+        'invoices' : Invoice.objects.all().order_by('date')
+    }
+
+    return render(request, 'invoices/home.html', args)
+
 @login_required
 def generate(request):
     if request.method == 'POST':
@@ -167,7 +169,7 @@ def generate(request):
         "bill_of_lading_form" : bill_of_lading_form,
     }
 
-    return render(request, 'invoice_generate.html', args)
+    return render(request, 'invoices/generate.html', args)
 
 
 @login_required
