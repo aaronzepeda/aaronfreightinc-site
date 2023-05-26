@@ -16,7 +16,9 @@ services:
        - db_password
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: ./backend/Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -45,6 +47,9 @@ services:
 
   server:
     image: nginx
+    build:
+      context: ./server
+      dockerfile: ./server/Dockerfile
     ports:
       - '80:80'
     volumes:
