@@ -115,7 +115,7 @@ def generate(request):
             invoice_number = bill_of_lading_form.cleaned_data["optional_invoice_number"]
             # Check if invoice number is given, if not then set it as new max
             if invoice_number is None:
-                invoice_number = 0
+                invoice_number = 1
             try:
                 matching_invoice = Invoice.objects.get(invoice_number=invoice_number)
                 if matching_invoice:
@@ -124,8 +124,6 @@ def generate(request):
                 max = Invoice.objects.aggregate(Max('invoice_number')).get('invoice_number__max')
                 if max:
                     invoice_number = max + 1
-                else:
-                    invoice_number = invoice_number + 1
 
                 
             bill_of_lading = bill_of_lading_form.cleaned_data["bill_of_lading"]
