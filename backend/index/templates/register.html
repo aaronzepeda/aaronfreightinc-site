@@ -1,6 +1,10 @@
 {% extends '__base.html' %}
 {% load static %}
 
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
 {% block header %}
 {% endblock %}
 
@@ -8,17 +12,22 @@
 <div class="bg-body-secondary">
   <div class="container-fluid bg-secondary py-2"></div>
   <div class="container-fluid text-center text-white bg-secondary pt-4 pb-2">
-    <h1><strong>Welcome!</strong></h1>
+    <h1><strong>Login</strong></h1>
   </div>
   <div class="container-fluid text-center text-white bg-secondary pt-2 pb-4">
-    You've landed at aaronzepeda.com.
+    Please fill out the information below to login.
   </div>
   
   <div class="container-fluid bg-secondary py-2"></div>
   <div class="container-sm py-4">
 
+    <form method="POST">
+      {% csrf_token %}
+      {% bootstrap_form register_form %}                  
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
   </div>
 </div>
-
 
 {% endblock %}
