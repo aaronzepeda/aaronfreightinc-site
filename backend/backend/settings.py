@@ -38,11 +38,9 @@ SERVER_PROTOCOL = 'http'
 SERVER_PORT = '8000'
 # Allowed hosts
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
-print(ALLOWED_HOSTS)
 
 postgres_password_file = config('POSTGRES_PASSWORD_FILE', default=None)
 if config('ENVIRONMENT') == 'production' and postgres_password_file:
-    print('In production!')
     # Database configuration
     POSTGRES_PASSWORD = ''
     with open(postgres_password_file) as f:
@@ -58,7 +56,6 @@ if config('ENVIRONMENT') == 'production' and postgres_password_file:
         }
     }
 else:
-    print('In development!')
     # Database
     # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

@@ -112,10 +112,17 @@ def generate(request):
             invoice_number = bill_of_lading_form.cleaned_data["optional_invoice_number"]
             # Check if invoice number is given, if not then set it as new max
             if invoice_number is None:
+                invoice_number = 0
+            try:
+                matching_invoice = Invoice.objects.get(invoice_number=invoice_number)
+                if matching_invoice:
+                    raise Http404("An invoice with that number already exists.")
+            except Invoice.DoesNotExist:
                 max = Invoice.objects.aggregate(Max('invoice_number')).get('invoice_number__max')
-                invoice_number = max + 1
-            elif Invoice.objects.get(invoice_number=invoice_number) is not None: 
-                raise Http404("An invoice with that number already exists.")
+                if max:
+                    invoice_number = max + 1
+                else:
+                    invoice_number = invoice_number + 1
 
                 
             bill_of_lading = bill_of_lading_form.cleaned_data["bill_of_lading"]
@@ -142,7 +149,7 @@ def generate(request):
                 trip.save()
                 invoice.save()
 
-                reverse_view_url = reverse('view_invoice_as_pdf', kwargs={'invoice_number': invoice.invoice_number})
+                reverse_view_url = reverse('invoices:view_invoice_as_pdf', kwargs={'invoice_number': invoice.invoice_number})
                 return HttpResponseRedirect(reverse_view_url)
             elif 'generate' in request.POST:
                 ...

@@ -1,18 +1,17 @@
 import os
+
+from django.conf import settings
+
 import cv2
 import numpy as np
 import pytesseract
 from pdf2image import convert_from_path, convert_from_bytes
-
 from PIL import Image 
 import PIL 
   
 def read_bill_of_lading(file):
-    # Set dependencies
 #    TESSERACT_PATH = r'dependencies/tesseract/tesseract.exe'
-#    POPPLER_PATH = r'dependencies/poppler/Library/bin'
 #    path = os.getcwd()
-#    poppler = os.path.abspath(os.path.join(path, POPPLER_PATH))
 #    tesseract = os.path.abspath(os.path.join(path, TESSERACT_PATH))
 #    pytesseract.pytesseract.tesseract_cmd = tesseract 
     
@@ -23,8 +22,17 @@ def read_bill_of_lading(file):
         'delivery_date' : "Delivery Date:",
     }
 
+    # Set dependencies
+    POPPLER_PATH = None
+    TESSERACT_PATH = None
+    if os.name == 'nt':
+        POPPLER_PATH = settings.BASE_DIR / 'dependencies/poppler/Library/bin'
+        TESSERACT_PATH = settings.BASE_DIR / 'dependencies/tesseract/tesseract.exe'
+        pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+        
+
     # Convert PDF to PIL images using pdf2image
-    pages = convert_from_bytes(file.read(), dpi=400)
+    pages = convert_from_bytes(file.read(), dpi=400, poppler_path = POPPLER_PATH)
     page = np.array(pages[0])
     gray = cv2.cvtColor(page, cv2.COLOR_BGR2GRAY)
     cv2.imwrite('output.png', gray)
