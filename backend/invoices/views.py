@@ -26,6 +26,7 @@ from weasyprint.text.fonts import FontConfiguration
 
 
 
+@login_required
 def index(request):
     args = {
         'invoices' : Invoice.objects.all().order_by('date')
@@ -100,7 +101,7 @@ def pdf(request, invoice):
         response['Content-Disposition'] = 'filename="' + invoice.get_pdf_name() + '.pdf"'
         return response
     
-# @login_required
+@login_required
 def generate(request):
     if request.method == 'POST':
         trip_form = BillOfLadingToTripForm(request.POST, request.FILES)
@@ -169,12 +170,13 @@ def generate(request):
     return render(request, 'invoice_generate.html', args)
 
 
+@login_required
 def view_invoice_as_pdf(request, invoice_number):
     try:
         invoice = Invoice.objects.get(invoice_number=invoice_number)
 
-        if not request.user.is_authenticated:
-            raise PermissionDenied
+        # if not request.user.is_authenticated:
+        #     raise PermissionDenied
             
     except Invoice.DoesNotExist:
         raise Http404("Invoice does not exist.")
