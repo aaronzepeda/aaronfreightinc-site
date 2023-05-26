@@ -120,7 +120,7 @@ def generate(request):
                     invoice_number = 1
                 else:
                     invoice_number = max + 1
-            elif Invoice.objects.get(invoice_number=invoice_number).exists():
+            elif Invoice.objects.filter(invoice_number=invoice_number).exists():
                 raise Http404("An invoice with that number already exists.")
 
                 
