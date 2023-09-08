@@ -40,7 +40,7 @@
             <strong>{{ invoice.invoicing_party.name }}<br></strong>
             {{ invoice.invoicing_party.phone.as_national }}<br>
             {{ invoice.invoicing_party.address.address }},<br>
-            {{ invoice.invoicing_party.address.city }}, {{ invoice.invoicing_party.address.state }}, {{ invoice.invoicing_party.address.zip }}<br>
+            {{ invoice.invoicing_party.address.city }}, {{ invoice.invoicing_party.address.state }} {{ invoice.invoicing_party.address.zip }}<br>
           </address>
         </div>
         <div class="col-2">
@@ -60,7 +60,7 @@
           <address>
             <u>{{ invoice.invoiced_party.name }}</u><br>
             {{ invoice.invoiced_party.billing_address.address }},<br>
-            {{ invoice.invoiced_party.billing_address.city }}, {{ invoice.invoiced_party.billing_address.state }}, {{ invoice.invoiced_party.billing_address.zip }}{{ invoice.invoiced_party.billing_address.zip_extension }}<br>
+            {{ invoice.invoiced_party.billing_address.city }}, {{ invoice.invoiced_party.billing_address.state }} {{ invoice.invoiced_party.billing_address.zip }}{{ invoice.invoiced_party.billing_address.zip_extension }}<br>
             {{ invoice.invoiced_party.phone.as_national }} {{ invoice.invoiced_party.phone_extension }}
           </address>
           <strong>Email Remit To:</strong><br>
@@ -77,11 +77,11 @@
           </div>
           <div class="d-flex justify-content-between">
             <p class="m-0">&emsp;Date</p>
-            <p class="m-0">{{ invoice.date }}</p>
+            <p class="m-0">{{ invoice.date|date:'n/d/y' }}</p>
           </div>
           <div class="d-flex justify-content-between">
             <p class="m-0">&emsp;Due Date</p>
-            <p class="m-0">{{ invoice.due_date }}</p>
+            <p class="m-0">{{ invoice.due_date|date:'n/d/y' }}</p>
           </div>
           <div class="d-flex justify-content-between">
             <p class="m-0">&emsp;Delivery No.</p>
@@ -89,7 +89,7 @@
           </div>
           <div class="d-flex justify-content-between">
             <p class="m-0">&emsp;Delivery Date</p>
-            <p class="m-0">{{ invoice.trip.delivery_date }}</p>
+            <p class="m-0">{{ invoice.trip.delivery_date|date:'n/d/y' }}</p>
           </div>
           <div class="d-flex justify-content-between">
             <p class="m-0">&emsp;Sales Order No.</p>
@@ -107,13 +107,13 @@
           <address>
             <u>{{ invoice.trip.ship_from_address.name }}</u><br>
             {{ invoice.trip.ship_from_address.address }},<br>
-            {{ invoice.trip.ship_from_address.city }}, {{ invoice.trip.ship_from_address.state }}, {{ invoice.trip.ship_from_address.zip }}<br>
+            {{ invoice.trip.ship_from_address.city }}, {{ invoice.trip.ship_from_address.state }} {{ invoice.trip.ship_from_address.zip }}<br>
           </address>
           <strong>To:</strong>
           <address>
             <u>{{ invoice.trip.ship_to_address.name }}</u><br>
             {{ invoice.trip.ship_to_address.address }},<br>
-            {{ invoice.trip.ship_to_address.city }}, {{ invoice.trip.ship_to_address.state }}, {{ invoice.trip.ship_to_address.zip }}<br>
+            {{ invoice.trip.ship_to_address.city }}, {{ invoice.trip.ship_to_address.state }} {{ invoice.trip.ship_to_address.zip }}<br>
           </address>
         </div>
 
@@ -154,7 +154,7 @@
             </thead>
             <tbody>
               <tr>
-                <td class="col-6">1 load shipped on {{ invoice.trip.delivery_date }}</td>
+                <td class="col-6">1 load shipped on {{ invoice.trip.delivery_date|date:'n/d/y' }}</td>
                 <td class="col-4">${{ invoice.rate|stringformat:"0.2f" }}</td>
                 <td class="col-2">${{ invoice.rate|stringformat:"0.2f" }}</td>
               </tr>
@@ -179,7 +179,7 @@
         <address>
           <u>{{ invoice.invoicing_party.name }}<br></u>
           {{ invoice.invoicing_party.address.address }},<br>
-          {{ invoice.invoicing_party.address.city }}, {{ invoice.invoicing_party.address.state }}, {{ invoice.invoicing_party.address.zip }}<br>
+          {{ invoice.invoicing_party.address.city }}, {{ invoice.invoicing_party.address.state }} {{ invoice.invoicing_party.address.zip }}<br>
         </address>
       </div>
       <div class="row pt-4">

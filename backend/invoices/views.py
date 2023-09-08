@@ -3,7 +3,7 @@ import os, tempfile
 from django.http import HttpResponse, HttpResponse ,HttpResponseRedirect, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.template.loader import get_template
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
@@ -14,7 +14,8 @@ from PyPDF2.generic import RectangleObject
 from PyPDF2 import PaperSize
 
 from .models import (
-    Invoice
+    Invoice,
+    Trip
 )
 from .forms import (
     BillOfLadingToTripForm,
@@ -98,7 +99,7 @@ def pdf(request, invoice):
 @login_required
 def index(request):
     args = {
-        'invoices' : Invoice.objects.all().order_by('date')
+        'invoices' : Invoice.objects.all().order_by('-date')
     }
 
     return render(request, 'invoices/home.html', args)
@@ -122,6 +123,10 @@ def generate(request):
                     invoice_number = max + 1
             elif Invoice.objects.filter(invoice_number=invoice_number).exists():
                 raise Http404("An invoice with that number already exists.")
+            
+            optional_sales_number = bill_of_lading_form.cleaned_data["optional_sales_number"]
+            optional_delivery_number = bill_of_lading_form.cleaned_data["optional_delivery_number"]
+            optional_delivery_date = bill_of_lading_form.cleaned_data["optional_delivery_date"]
 
                 
             bill_of_lading = bill_of_lading_form.cleaned_data["bill_of_lading"]
@@ -141,12 +146,33 @@ def generate(request):
                 bill_of_lading,
                 trip,
                 rate,
-                notes
+                notes,
+                optional_sales_number,
+                optional_delivery_number,
+                optional_delivery_date,
             )
 
             if 'generate_and_save' in request.POST:
-                trip.save()
-                invoice.save()
+                try:
+                    old_trip = Trip.objects.get(trip_number=trip.trip_number)
+                    old_trip.delete()
+                except Trip.DoesNotExist:
+                    ...
+                try:
+                    trip.save()
+                except ValidationError as e:
+                    raise Http404("Bill of lading could not be read. ERROR: " + str(e))
+                
+                try:
+                    old_invoice = Invoice.objects.get(invoice_number=invoice.invoice_number)
+                    old_invoice.delete()
+                except Invoice.DoesNotExist:
+                    ...
+                try:
+                    invoice.save()
+                except ValidationError as e:
+                    trip.delete()
+                    raise Http404("Invoice could not be generated. ERROR: " + str(e))
 
                 reverse_view_url = reverse('invoices:view_invoice_as_pdf', kwargs={'invoice_number': invoice.invoice_number})
                 return HttpResponseRedirect(reverse_view_url)

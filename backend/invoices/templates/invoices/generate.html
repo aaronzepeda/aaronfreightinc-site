@@ -36,6 +36,24 @@
       <br>
       {% bootstrap_label "Leave empty to automatically determine the next invoice number." label_class='form-text mb-1' %}
       {% bootstrap_field bill_of_lading_form.optional_invoice_number show_label=False %}
+
+      <!-- Optional Sales Number Field -->
+      {% bootstrap_label bill_of_lading_form.optional_sales_number.label label_class='mb-0' %}
+      <br>
+      {% bootstrap_label "Leave empty to scan the sales number." label_class='form-text mb-1' %}
+      {% bootstrap_field bill_of_lading_form.optional_sales_number show_label=False %}
+
+      <!-- Optional Delivery Number Field -->
+      {% bootstrap_label bill_of_lading_form.optional_delivery_number.label label_class='mb-0' %}
+      <br>
+      {% bootstrap_label "Leave empty to scan the delivery number." label_class='form-text mb-1' %}
+      {% bootstrap_field bill_of_lading_form.optional_delivery_number show_label=False %}
+
+      <!-- Optional Delivery Date Field -->
+      {% bootstrap_label bill_of_lading_form.optional_delivery_date.label label_class='mb-0' %}
+      <br>
+      {% bootstrap_label "Leave empty to scan the delivery date. Otherwise provide date in DD/MM/YY" label_class='form-text mb-1' %}
+      {% bootstrap_field bill_of_lading_form.optional_delivery_date show_label=False %}
       
       <!-- Bill of Lading Field -->
       {% bootstrap_field bill_of_lading_form.bill_of_lading %}

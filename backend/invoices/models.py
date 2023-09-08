@@ -18,7 +18,7 @@ class Address(models.Model):
         verbose_name_plural = "addresses"
         
     def __str__(self):
-        return self.address + ', ' +  self.city + ', ' +  self.state + ' ' + self.zip + " | " + self.name
+        return self.name + " | " + self.address + ', ' +  self.city + ', ' +  self.state + ' ' + self.zip
 
     def get_full_address(self):
         address = self.address + ', ' +  self.city + ', ' +  self.state + ' ' + self.zip
@@ -76,6 +76,7 @@ class Trip(models.Model):
         return "TRIP #" + str(self.trip_number)
 
 class Invoice(models.Model):
+
     TERMS_CHOICE = (
         (7, "Net 7"),
         (15, "Net 15"),
@@ -95,6 +96,9 @@ class Invoice(models.Model):
     trip = models.OneToOneField(Trip, on_delete=models.CASCADE)
     rate = models.DecimalField(max_digits=7, decimal_places=2)
     notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['invoice_number']
 
     def __str__(self):
         return "INVOICE #" + str(self.invoice_number)

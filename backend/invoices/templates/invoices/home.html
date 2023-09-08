@@ -42,8 +42,8 @@
         <tr>
           <td>{{ invoice.invoice_number }}</td>
           <td>{{ invoice.trip.ship_from_address.name }}, {{ invoice.trip.ship_from_address.state }} to {{ invoice.trip.ship_to_address.name }}, {{ invoice.trip.ship_to_address.state }}</td>
-          <td>{{ invoice.date }}</td>
-          <td>{{ invoice.due_date }}</td>
+          <td>{{ invoice.date|date:'n/d/y' }}</td>
+          <td>{{ invoice.due_date|date:'n/d/y' }}</td>
           <td><a href="{% url 'invoices:view_invoice_as_pdf' invoice_number=invoice.invoice_number %}">PDF</a></td>
         </tr>
         {% endfor %}

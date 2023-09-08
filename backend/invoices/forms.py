@@ -54,17 +54,30 @@ class BillOfLadingToInvoiceForm(forms.ModelForm):
 
         return trip
 
-    def generate_invoice(invoice_number, bill_of_lading, trip, rate, notes):
+    def generate_invoice(invoice_number, bill_of_lading, trip, rate, notes, optional_sales_number, optional_delivery_number, optional_delivery_date):
 
         mapped_bill_of_lading = read_bill_of_lading(bill_of_lading.file)
-        trip.attachment = bill_of_lading
-        trip.delivery_number = mapped_bill_of_lading['delivery_number']
-        trip.delivery_date = datetime.strptime(mapped_bill_of_lading['delivery_date'], '%m/%d/%y').date()
 
-        sales_number = mapped_bill_of_lading['sales_number']
-        delivery_date = datetime.strptime(mapped_bill_of_lading['delivery_date'], '%m/%d/%y').date()
-        date = delivery_date
-        due_date = date + timedelta(days=DEFAULT_TERMS)
+        if optional_sales_number is None:
+            sales_number = mapped_bill_of_lading['sales_number']
+        else:
+            sales_number = optional_sales_number
+
+        if optional_delivery_number is None:
+            trip.delivery_number = mapped_bill_of_lading['delivery_number']
+        else:
+            trip.delivery_number = optional_delivery_number
+
+        if optional_delivery_date is None:
+            base_date = datetime.strptime(mapped_bill_of_lading['delivery_date'], '%m/%d/%y').date()
+        else:
+            base_date = optional_delivery_date
+        invoice_date = base_date
+        trip.delivery_date = invoice_date
+        due_date = base_date + timedelta(days=DEFAULT_TERMS)
+            
+        trip.attachment = bill_of_lading
+
 
         invoicing_party = Company.objects.filter(name=DEFAULT_INVOICING_PARTY).first()
         invoiced_party = Company.objects.filter(name=DEFAULT_INVOICED_PARTY).first()
@@ -74,7 +87,7 @@ class BillOfLadingToInvoiceForm(forms.ModelForm):
             invoiced_party = invoiced_party,
             invoice_number = invoice_number,
             terms = DEFAULT_TERMS,
-            date = delivery_date,
+            date = invoice_date,
             due_date = due_date,
             sales_number = sales_number,
             trip = trip,
@@ -89,3 +102,7 @@ class BillOfLadingToInvoiceForm(forms.ModelForm):
 class BillOfLadingForm(forms.Form):
     bill_of_lading = forms.FileField()
     optional_invoice_number = forms.IntegerField(required=False, label="Invoice Number")
+    optional_sales_number = forms.IntegerField(required=False, label="Sales Number")
+    optional_delivery_number = forms.IntegerField(required=False, label="Delivery Number")
+    optional_delivery_date = forms.DateField(required=False, label="Delivery Date")
+    forms.DateField()
